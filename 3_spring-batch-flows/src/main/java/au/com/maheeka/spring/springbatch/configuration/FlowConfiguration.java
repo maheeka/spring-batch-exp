@@ -8,6 +8,8 @@ import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
+import org.springframework.batch.core.job.builder.FlowBuilder;
+import org.springframework.batch.core.job.flow.Flow;
 import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -16,7 +18,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @EnableBatchProcessing
 @Slf4j
-public class FlowFirstConfiguration {
+public class FlowConfiguration {
 
     @Autowired
     private JobBuilderFactory jobBuilderFactory;
@@ -28,7 +30,7 @@ public class FlowFirstConfiguration {
     public Step step1() {
         return stepBuilderFactory.get("step1")
                 .tasklet((contribution, chunkContext) -> {
-                    System.out.println(">> This is step 1");
+                    System.out.println(">> This is step 1 in foo");
                     return RepeatStatus.FINISHED;
                 }).build();
     }
@@ -37,41 +39,20 @@ public class FlowFirstConfiguration {
     public Step step2() {
         return stepBuilderFactory.get("step2")
                 .tasklet((contribution, chunkContext) -> {
-                    System.out.println(">> This is step 2");
+                    System.out.println(">> This is step 2 in foo");
                     return RepeatStatus.FINISHED;
                 }).build();
     }
 
     @Bean
-    public Step step3() {
-        return stepBuilderFactory.get("step3")
-                .tasklet((contribution, chunkContext) -> {
-                    log.info(">> This is step 3");
-                    return RepeatStatus.FINISHED;
-                }).build();
-    }
+    public Flow foo() {
+        FlowBuilder<Flow> flowBuilder = new FlowBuilder<>("foo");
 
-    // SIMPLE STEPS
-//    @Bean
-//    public Job transitionJobSimpleNext() {
-//        return jobBuilderFactory.get(UUID.randomUUID().toString())
-//                .start(step1())
-//                .next(step2())
-//                .next(step3())
-//                .build();
-//    }
+        flowBuilder.start(step1())
+                .next(step2())
+                .end();
 
-    // CONDITIONAL STEPS. SAME AS ABOVE
-    @Bean
-    public Job transitionJobSimpleNext() {
-        return jobBuilderFactory.get(UUID.randomUUID().toString())
-                .start(step1())
-                .on(ExitStatus.COMPLETED.getExitCode()).to(step2()) // can have any custom status here
-//                .from(step2()).on("COMPLETED").stop()
-                .from(step2()).on("COMPLETED").stopAndRestart(step3())
-//                .from(step2()).on("COMPLETED").to(step3())
-                .from(step3()).end()
-                .build();
+        return flowBuilder.build();
     }
 
 }
