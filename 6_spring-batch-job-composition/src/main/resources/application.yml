@@ -1,0 +1,10 @@
+spring:
+  batch:
+    initialize-schema: always
+    job:
+      names: parentJob # ensures only parent job runs. Otherwise it will also run the childJob
+  datasource:
+    url: jdbc:postgresql://localhost:5432/batchdb
+    username: user
+    password: password
+    driverClassName: org.postgresql.Driver
