@@ -38,7 +38,7 @@ public class JobConfiguration {
     public JdbcCursorItemReader<Customer> cursorItemReader() {
         JdbcCursorItemReader<Customer> reader = new JdbcCursorItemReader<>();
 
-        reader.setSql("SELECT id, firstName, lastName, birthdate from customer");
+        reader.setSql("SELECT id, firstName, lastName, birthdate from customer order by firstName, lastName");
         reader.setDataSource(customerDataSource());
         reader.setRowMapper(new CustomerRowMapper());
 
