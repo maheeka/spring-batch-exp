@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class DeciderApplication {
+public class ListenerApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(DeciderApplication.class, args);
+		SpringApplication.run(ListenerApplication.class, args);
 	}
 
 }
