@@ -1,5 +1,6 @@
 package au.com.maheeka.spring.springbatch.configuration;
 
+import au.com.maheeka.spring.springbatch.listener.ChunkListener;
 import au.com.maheeka.spring.springbatch.model.Customer;
 import au.com.maheeka.spring.springbatch.model.CustomerRowMapper;
 import java.util.UUID;
@@ -55,6 +56,7 @@ public class JobConfiguration {
                 .chunk(10)
                 .reader(cursorItemReader())
                 .writer(customerItemWriter())
+                .listener(new ChunkListener())
                 .build();
     }
 
