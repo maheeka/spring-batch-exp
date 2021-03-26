@@ -1,0 +1,20 @@
+spring:
+  batch:
+    initialize-schema: always
+datasource:
+  batch-db:
+    jdbc-url: jdbc:postgresql://localhost:5432/batchdb
+    username: user
+    password: password
+    driverClassName: org.postgresql.Driver
+    continueOnError: false
+  customer-db:
+    jdbc-url: jdbc:postgresql://localhost:5432/customer
+    username: user
+    password: password
+    driverClassName: org.postgresql.Driver
+  customer-write-db:
+    jdbc-url: jdbc:postgresql://localhost:5432/customer-write
+    username: user
+    password: password
+    driverClassName: org.postgresql.Driver
